@@ -9,5 +9,6 @@ This is a very practical project based learning program that has given me the co
 4. Batch processing - Spark
 5. Transformation - dbt
 6. Streaming - Kafka
+7. Other - Terraform for IaC
 
 I will keep updating this document as I progress in the course.
