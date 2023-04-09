@@ -4,7 +4,11 @@ __pycache__/
 *$py.class
 
 # C extensions
-*.so
+*.csv.gz
+
+learn_practice/docker_learning/2. docker_postgres/ny_taxi_postgres_data/
+postgres_docker/ny_taxi_postgres_data/
+data/*
 
 # Distribution / packaging
 .Python
