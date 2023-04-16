@@ -14,4 +14,4 @@ docker run --rm -itd \
     -p 5431:5432 \
     --network my_app_network \
     --name postgres_db_zoomcamp \
-        test:postgres
+        postgres:v1
