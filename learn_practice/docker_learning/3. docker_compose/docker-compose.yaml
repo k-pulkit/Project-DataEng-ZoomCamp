@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  pgdatabase:
+    image: postgres:12
+    container_name: pgdatabase
+    ports:
+      - "5430:5432"
+    volumes:
+      - ./ny_taxi_postgres_data:/var/lib/postgresql/data:rw
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=ny_taxi
+    command: ["postgres"]
+    networks:
+      - my_app_network
+
+  ingest_data:
+    build: ../ingest_data_docker/.
+    container_name: ingest_data
+    depends_on:
+      - pgdatabase
+    networks:
+      - my_app_network
+    environment:
+      - URL=${URL}
+      - USER=user
+      - PASSWORD=password
+      - HOST=pgdatabase
+      - PORT=5432
+      - DB_NAME=ny_taxi
+      - TABLE_NAME=test
+    
+networks:
+  my_app_network:
+  
