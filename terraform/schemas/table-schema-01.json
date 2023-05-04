@@ -1,0 +1,20 @@
+[
+    {
+      "name": "_src_file_name",
+      "mode": "REQUIRED",
+      "type": "STRING",
+      "description": "The file name of the source file."
+    },
+      {
+      "name": "_firestore_doc_id",
+      "mode": "REQUIRED",
+      "type": "STRING",
+      "description": "The hash code (based on the file name and its content, so each file has a unique hash) used as a Firestore document id."
+    },
+    {
+      "name": "_ingested_ts",
+      "mode": "REQUIRED",
+      "type": "TIMESTAMP",
+      "description": "The timestamp when this record was processed during ingestion into the BigQuery table."
+    }
+  ]

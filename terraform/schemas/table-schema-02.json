@@ -1,0 +1,20 @@
+[
+    {
+      "name": "table_column_01",
+      "mode": "REQUIRED",
+      "type": "STRING",
+      "description": ""
+    },
+    {
+      "name": "_gcs_file_path",
+      "mode": "REQUIRED",
+      "type": "STRING",
+      "description": "The GCS path to the file for loading."
+    },
+    {
+      "name": "_src_file_ts",
+      "mode": "REQUIRED",
+      "type": "TIMESTAMP",
+      "description": "The source file modification timestamp."
+    }
+  ]
