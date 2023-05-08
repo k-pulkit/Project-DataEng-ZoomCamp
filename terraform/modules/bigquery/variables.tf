@@ -1,26 +1,13 @@
-locals {
-  data_lake_bucket = "dezcamp_zucket"
-}
-
-variable "credentials" {
-  description = "value"
+variable "project" {
   type = string
 }
 
-variable "project" {
-  description = "The test project for DE Zoomcamp"
-}
-
 variable "region" {
-  description = "What region to deploy"
-  default = "us-central1"
-  type =  string
+  type = string
 }
 
-variable "storage_class" {
-  description = "value"
-  default = "STANDARD"
-  type =  string
+variable "credentials" {
+  type = string
 }
 
 variable "BQ_DATASET" {
