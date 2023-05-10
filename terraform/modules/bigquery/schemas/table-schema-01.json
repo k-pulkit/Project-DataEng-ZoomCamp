@@ -1,23 +1,5 @@
 [
   {
-    "name": "_src_file_name",
-    "mode": "REQUIRED",
-    "type": "STRING",
-    "description": "The file name of the source file."
-  },
-  {
-    "name": "_firestore_doc_id",
-    "mode": "REQUIRED",
-    "type": "STRING",
-    "description": "A hash code used as a Firestore document id."
-  },
-  {
-    "name": "_ingested_ts",
-    "mode": "REQUIRED",
-    "type": "TIMESTAMP",
-    "description": "The timestamp when this record was processed during ingestion."
-  },
-  {
     "name": "VendorID",
     "mode": "NULLABLE",
     "type": "INTEGER",

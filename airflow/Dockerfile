@@ -3,7 +3,8 @@ FROM apache/airflow:2.2.3
 ENV AIRFLOW_HOME=/opt/airflow
 
 USER root
-RUN apr-get update -qq  apt-get install wget
+RUN apt-get update && apt-get install vim -qqq
+RUN apt-get install wget -y
 
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
@@ -13,7 +14,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-e", "-u", "-x", "-c"]
 ARG CLOUD_SDK_VERSION=322.0.0
 ENV GCLOUD_HOME=/home/google-cloud-sdk
 
-ENV path="${GCLOUD_HOME}/bin/:${PATH}"
+ENV PATH="${GCLOUD_HOME}/bin/:${PATH}"
 
 RUN DOWNLOAD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz" \
     && TMP_DIR="$(mktemp -d)" \
@@ -34,4 +35,3 @@ COPY scripts scripts
 RUN chmod +x scripts
 
 USER $AIRFLOW_UID
-

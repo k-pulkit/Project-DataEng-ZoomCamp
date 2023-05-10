@@ -78,8 +78,8 @@ x-airflow-common:
     GOOGLE_APPLICATION_CREDENTIALS: /.google/credentials/google_credentials.json
     AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT: 'google-cloud-platform://?extra__google_cloud_platform__key_path=/.google/credentials/google_credentials.json'
     # Project related
-    GCP_PROJECT_ID: ""
-    GCP_GCS_BUCKET: ""
+    GCP_PROJECT_ID: "dezoomcamp-384523"
+    GCP_GCS_BUCKET: "dezcamp_zucket_dezoomcamp-384523"
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
