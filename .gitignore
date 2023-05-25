@@ -1,6 +1,7 @@
 # Local .terraform directories
 **/.terraform/*
-airflow/logs/scheduler/**/*
+airflow/logs/scheduler/latest/*
+airflow/logs
 
 # .tfstate files
 *.tfstate
