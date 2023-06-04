@@ -59,14 +59,14 @@ def create_dag(taxi_type, start, end):
     taxi_type=taxi_type
 
     dag = DAG(
-        f"Ingestion_Pipeline_{taxi_type}",
+        f"DAG_ingest_to_gcs_{taxi_type}",
         default_args=default_args,
         description = "Pipeline to ingest NYtaxi data",
         schedule_interval = '@monthly',
         start_date = start,
         end_date=end,
         catchup = True,
-        max_active_runs = 1,
+        max_active_runs = 3,
         dagrun_timeout=timedelta(minutes=40)
     ) 
 
@@ -89,9 +89,9 @@ def create_dag(taxi_type, start, end):
             parquet_file = dataset_file.replace("csv.gz", "parquet")
             # GCS PREFIX
             base_prefix = 'tripsdata'
-            bucket_prefix = f"{base_prefix}/taxitype={taxi_type}" + f'/year={execution_date.strftime("%Y")}/month={execution_date.strftime("%m")}'
-            csv_obj_name = f"csv/{bucket_prefix}/{dataset_file}"
-            parquet_obj_name = f"parquet/{bucket_prefix}/{parquet_file}"
+            bucket_prefix = f"{base_prefix}/taxitype={taxi_type}" + f'/year={execution_date.strftime("%Y")}'
+            csv_obj_name = f"raw_csv/{bucket_prefix}/{dataset_file}"
+            parquet_obj_name = f"raw_parquet/{bucket_prefix}/{parquet_file}"
             # Push to xcom
             context['ti'].xcom_push(key='dataset_file', value=dataset_file)
             context['ti'].xcom_push(key='dataset_url', value=dataset_url)
@@ -156,48 +156,15 @@ def create_dag(taxi_type, start, end):
         
         transform_task = convert_to_parquet()
         
-        # BQ task
-        upload_bq_task = BigQueryCreateExternalTableOperator(task_id='BQ_ExternalTable',
-                                                            table_resource={
-                                                                "tableReference": {
-                                                                    "projectId": PROJECT_ID,
-                                                                    "datasetId": BIGQUERY_DATASET,
-                                                                    "tableId": f"ExternalTable_{taxi_type}"
-                                                                },
-                                                                "externalDataConfiguration": {
-                                                                    "sourceFormat": "PARQUET",
-                                                                    "sourceUris": [f"gs://{BUCKET_NAME}/parquet/tripsdata/taxitype={taxi_type}/*"]
-                                                                }
-                                                            }
-                                                            )
-        
-        # Branching
-        def check_success(**context):
-            parallel_task_ids = ["GCS_CSV_UPLOAD", "GCS_PARQUET_UPLOAD", "BQ_UPLOAD"]
-            task_instances = context["task_instance"]
-            return "End"
-        
-        check_success_task = BranchPythonOperator(task_id="Check_success_upstream", python_callable=check_success, provide_context=True)
-
-        # Send email of failure task
-        notify = EmailOperator(task_id="send_email",
-                            to = "pulkit42041@gmail.com",
-                            subject='Airflow Email Example',
-                            html_content='<p>The execution of the Airflow dag failed. DAG id is {{ dag_run.run_id }} on date {{ dag_run.execution_date }}.</p>',
-            )
-        
         # End task
         end_task = DummyOperator(task_id='End', trigger_rule='none_failed')
         
-        start_task >> get_file_info >> download_task >> transform_task >> upload_bq_task
-        upload_bq_task >> check_success_task 
-        check_success_task >> Label("Success") >> end_task
-        check_success_task >> notify >> end_task
+        start_task >> get_file_info >> download_task >> transform_task >> end_task
     
     return dag
 
-#dag_yellow = create_dag("yellow", datetime(2019, 1, 1), datetime(2021, 7, 1))
-#dag_fhv = create_dag("fhv", datetime(2019, 1, 1), datetime(2021, 7, 1))
+dag_yellow = create_dag("yellow", datetime(2019, 1, 1), datetime(2021, 7, 1))
+dag_fhv = create_dag("fhv", datetime(2019, 1, 1), datetime(2021, 7, 1))
 dag_green = create_dag("green", datetime(2019, 1, 1), datetime(2021, 7, 1))
         
         
