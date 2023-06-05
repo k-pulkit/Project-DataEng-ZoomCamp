@@ -41,5 +41,12 @@ models:
     serving:
       materialized: table
 
+seeds:
+  ny_taxi_project:
+    taxi_zone_lookup:
+      +column_types:
+        locationid: numeric
+        
+
 vars:
   environment: "dev"
