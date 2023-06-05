@@ -9,4 +9,72 @@ sources:
       - name: green_partitoned_clustered
       - name: yellow_partitoned_clustered
 
-      
+models:
+  - name: stg_green_tripdata
+    description: >
+      Trips of green taxis, also known as BORO taxi. 
+      The records were collected by NY taxi and TLC.
+    columns:
+      - name: tripid
+        description: ID column generated from VendorID and pickup datetime columns
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: Pickup_locationid
+        description: Location ID of the pickup
+        tests:
+          - relationships:
+              field: locationid
+              to: ref('taxi_zone_lookup')
+              severity: warn
+      - name: Dropoff_locationid
+        description: Location ID of the drop-off
+        tests:
+          - relationships:
+              field: locationid
+              to: ref('taxi_zone_lookup')
+              severity: warn
+      - name: payment_type
+        description: >
+          A numeric code signifying how the passenger paid for the trip.
+        tests:
+          - accepted_values:
+              values: "{{ var('payment_type_values') }}"
+              severity: warn
+              quote: false
+  - name: stg_yellow_tripdata
+    description: >
+      Trips of yellow taxis.
+      The records were collected by NY taxi and TLC.
+    columns:
+      - name: tripid
+        description: ID column generated from VendorID and pickup datetime columns
+        tests:
+          - unique:
+              severity: warn
+          - not_null:
+              severity: warn
+      - name: Pickup_locationid
+        description: Location ID of the pickup
+        tests:
+          - relationships:
+              field: locationid
+              to: ref('taxi_zone_lookup')
+              severity: warn
+      - name: Dropoff_locationid
+        description: Location ID of the drop-off
+        tests:
+          - relationships:
+              field: locationid
+              to: ref('taxi_zone_lookup')
+              severity: warn
+      - name: payment_type
+        description: >
+          A numeric code signifying how the passenger paid for the trip.
+        tests:
+          - accepted_values:
+              values: "{{ var('payment_type_values') }}"
+              severity: warn
+              quote: false

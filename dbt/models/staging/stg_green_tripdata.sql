@@ -40,6 +40,7 @@ select
     cast(congestion_surcharge as numeric) as congestion_surcharge
 
 from tripdata
+where rn=1
 
 {% if var("environment")=="dev" %}
 
