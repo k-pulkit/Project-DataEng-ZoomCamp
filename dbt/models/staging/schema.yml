@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: staging
+    database: dezoomcamp-384523
+    schema: trips_data_all
+
+    tables:
+      - name: green_partitoned_clustered
+      - name: yellow_partitoned_clustered
+
+      

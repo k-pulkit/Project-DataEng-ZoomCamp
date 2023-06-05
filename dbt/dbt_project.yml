@@ -40,3 +40,6 @@ models:
       materialized: view
     serving:
       materialized: table
+
+vars:
+  environment: "dev"
